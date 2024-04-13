@@ -1,4 +1,4 @@
-// Definição da classe Users
+
 class Users {
     constructor() {
         this.usuarios = JSON.parse(localStorage.getItem('usuarios')) || [];
@@ -14,7 +14,6 @@ class Users {
     }
 }
 
-// Instância da classe Users
 const users = new Users();
 
 document.getElementById('Botão_add_User').addEventListener('click', function() {
@@ -23,7 +22,6 @@ document.getElementById('Botão_add_User').addEventListener('click', function() 
     document.getElementById('digitar_usuario').value = ''; // Limpar o campo de texto
 });
 
-// Evento de clique do botão "Listar Usuários"
 document.getElementById('Lista_Users').addEventListener('click', function() {
     const usuarios = users.getUsuarios();
     const userList = document.getElementById('User_lista');
@@ -39,7 +37,6 @@ document.getElementById('Lista_Users').addEventListener('click', function() {
     userList.classList.toggle('hidden');
 });
 
-// Ao carregar a página, exibir os usuários salvos
 window.addEventListener('load', function() {
     const usuarios = users.getUsuarios();
     const userList = document.getElementById('User_lista');
