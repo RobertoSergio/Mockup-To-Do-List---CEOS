@@ -13,10 +13,83 @@
             <h1>Minhas notas<br>#TarefaX</h1>    
         </div>
         <div class="user_nota">
-            <textarea placeholder="Digite uma nota..."></textarea>
-            <br>
-            <button type="submit">Salvar</button>
+            <div class="line-wrap">
+                <input type="text" class="line">
+            </div>
+            <div class="line-wrap">
+                <input type="text" class="line">
+            </div>
+            <div class="line-wrap">
+                <input type="text" class="line">
+            </div>
+            <div class="line-wrap">
+                <input type="text" class="line">
+            </div>
+            <div class="line-wrap">
+                <input type="text" class="line">
+            </div>
+            <div class="line-wrap">
+                <input type="text" class="line">
+            </div><div class="line-wrap">
+                <input type="text" class="line">
+            </div>
+            <div class="line-wrap">
+                <input type="text" class="line">
+            </div>
+            <div class="line-wrap">
+                <input type="text" class="line">
+            </div>
+            <div class="line-wrap">
+                <input type="text" class="line">
+            </div>
+            <div class="line-wrap">
+                <input type="text" class="line">
+            </div>
+            <div class="line-wrap">
+                <input type="text" class="line">
+            </div>
+            <button type="submit" class="btn">Salvar</button>
         </div>
     </div>
 </body>
 
+<script>
+    const lines = document.querySelectorAll(".line");
+    const button = document.getElementsByClassName("btn")[0];
+    let save = true;
+
+    const saveEdit = () => {
+        if (save) {
+            button.innerHTML = "Editar";
+            save = false;
+        } else {
+            button.innerHTML = "Salvar";
+            save = true;
+        }
+
+        button.classList.toggle("edit-btn");
+        lineControls();
+    }
+
+    const lineControls = () => (
+            lines.forEach(line => {
+            if (!save) {
+                line.setAttribute("disabled", true);
+            } else {
+                line.removeAttribute("disabled");
+            }
+        })
+    )
+
+    const setLinesMaxWidth = () => {
+        lines.forEach(line => {
+            line.setAttribute("maxlength", line.offsetWidth/11);
+        });
+    }
+    setLinesMaxWidth()
+
+    button.addEventListener("click", saveEdit);
+
+    window.addEventListener("resize", setLinesMaxWidth);
+
+</script>
