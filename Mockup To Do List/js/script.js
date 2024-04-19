@@ -1,49 +1,94 @@
-
-class Users {
+class TaskManager {
     constructor() {
-        this.usuarios = JSON.parse(localStorage.getItem('usuarios')) || [];
+        this.tasks = JSON.parse(localStorage.getItem('tasks')) || [];
     }
 
-    adicionarUsuario(nome) {
-        this.usuarios.push(nome);
-        localStorage.setItem('usuarios', JSON.stringify(this.usuarios));
+    adicionarTask(task) {
+        this.tasks.push(task);
+        localStorage.setItem('tasks', JSON.stringify(this.tasks));
     }
 
-    getUsuarios() {
-        return this.usuarios;
+    removerTask(index) {
+        if (this.tasks.length > 0) {
+            this.tasks.splice(index, 1);
+            localStorage.setItem('tasks', JSON.stringify(this.tasks));
+        }
+    }
+
+    setTasks(tasks) {
+        this.tasks = tasks;
+        localStorage.setItem('tasks', JSON.stringify(this.tasks));
+    }
+
+    getTasks() {
+        return this.tasks;
     }
 }
 
-const users = new Users();
+var taskManager = new TaskManager();
 
-document.getElementById('Botão_add_User').addEventListener('click', function() {
-    const nome = document.getElementById('digitar_usuario').value;
-    users.adicionarUsuario(nome);
-    document.getElementById('digitar_usuario').value = ''; // Limpar o campo de texto
-});
+// taskManager.adicionarTask({ title: 'Acordar', completed: false });
+// taskManager.removerTask();
+// taskManager.adicionarTask({ title: 'Almoço', time: '12:00', descricao: 'Comprar comida' });
 
-document.getElementById('Lista_Users').addEventListener('click', function() {
-    const usuarios = users.getUsuarios();
-    const userList = document.getElementById('User_lista');
-    userList.innerHTML = '';
-    usuarios.forEach(function(usuario) {
-        const li = document.createElement('li');
-        li.textContent = usuario;
-        userList.appendChild(li);
+// Função para mostrar a lista de tarefas na página enquanto ordena a lista de tarefas pelo horário 
+// e muda o índice de cada tarefa pela ordem do horário
+function renderTasks() {
+    let tasks = taskManager.getTasks();
+    
+    // Ordena as tarefas por horário
+    tasks.sort((ativ1, ativ2) => {
+        // Separa as horas e minutos
+        const [Hora1, Minuto1] = ativ1.time.split(':').map(Number);
+        const [Hora2, Minuto2] = ativ2.time.split(':').map(Number);
+        
+        // Compara as horas
+        if (Hora1 < Hora2) return -1;
+        if (Hora1 > Hora2) return 1;
+        
+        // Se as horas forem iguais, compara os minutos
+        if (Minuto1 < Minuto2) return -1;
+        if (Minuto1 > Minuto2) return 1;
+        
+        return 0;
     });
-});
-document.getElementById('Lista_Users').addEventListener('click', function() {
-    const userList = document.getElementById('User_lista');
-    userList.classList.toggle('hidden');
-});
 
-window.addEventListener('load', function() {
-    const usuarios = users.getUsuarios();
-    const userList = document.getElementById('User_lista');
-    usuarios.forEach(function(usuario) {
-        const li = document.createElement('li');
-        li.textContent = usuario;
-        userList.appendChild(li);
+    // Atualiza a lista de tarefas na taskManager
+    taskManager.setTasks(tasks);
+
+    const taskList = document.getElementById('taskList');
+    taskList.innerHTML = '';
+    tasks.forEach(function(task) {
+        const div = document.createElement('div');
+        div.classList.add('task-item');
+        div.innerHTML = `
+            <p> ${task.title}</p>
+            <p> ${task.time}</p>
+        `;
+        if (task.completed) {
+            div.style.textDecoration = 'line-through';
+        }
+        taskList.appendChild(div);
     });
-});
+}
 
+// Função para pesquisar na lista
+function renderFilteredTasks(filteredTasks) {
+    const taskList = document.getElementById('taskList');
+    taskList.innerHTML = '';
+    filteredTasks.forEach(function(task) {
+        const div = document.createElement('div');
+        div.classList.add('task-item');
+        div.innerHTML = `
+            <p><strong></strong> ${task.title}</p>
+            <p><strong></strong> ${task.time}</p>
+        `;
+        if (task.completed) {
+            div.style.textDecoration = 'line-through';
+        }
+        taskList.appendChild(div);
+    });
+}
+
+// Ao entrar na página carrega a função rendertasks
+window.addEventListener('load', renderTasks);
