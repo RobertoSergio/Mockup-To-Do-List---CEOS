@@ -36,31 +36,30 @@ var taskManager = new TaskManager();
 function renderTasks() {
     let tasks = taskManager.getTasks();
     
-    // Ordena as tarefas por horário
+
     tasks.sort((ativ1, ativ2) => {
-        // Separa as horas e minutos
+
         const [Hora1, Minuto1] = ativ1.time.split(':').map(Number);
         const [Hora2, Minuto2] = ativ2.time.split(':').map(Number);
         
-        // Compara as horas
+
         if (Hora1 < Hora2) return -1;
         if (Hora1 > Hora2) return 1;
         
-        // Se as horas forem iguais, compara os minutos
+
         if (Minuto1 < Minuto2) return -1;
         if (Minuto1 > Minuto2) return 1;
         
         return 0;
     });
 
-    // Atualiza a lista de tarefas na taskManager
     taskManager.setTasks(tasks);
 
-    const taskList = document.getElementById('taskList');
+    const taskList = document.getElementById('Lista_de_tarefas');
     taskList.innerHTML = '';
     tasks.forEach(function(task) {
         const div = document.createElement('div');
-        div.classList.add('task-item');
+        div.classList.add('Tarefa');
         div.innerHTML = `
             <p> ${task.title}</p>
             <p> ${task.time}</p>
@@ -74,14 +73,14 @@ function renderTasks() {
 
 // Função para pesquisar na lista
 function renderFilteredTasks(filteredTasks) {
-    const taskList = document.getElementById('taskList');
+    const taskList = document.getElementById('Lista_de_tarefas');
     taskList.innerHTML = '';
     filteredTasks.forEach(function(task) {
         const div = document.createElement('div');
-        div.classList.add('task-item');
+        div.classList.add('Tarefa');
         div.innerHTML = `
-            <p><strong></strong> ${task.title}</p>
-            <p><strong></strong> ${task.time}</p>
+            <p> ${task.title}</p>
+            <p> ${task.time}</p>
         `;
         if (task.completed) {
             div.style.textDecoration = 'line-through';
