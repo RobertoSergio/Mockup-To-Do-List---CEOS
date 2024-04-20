@@ -63,11 +63,6 @@ h1{
     margin: -15px;
 }
 
-.Tarefa .input_editado:focus {
-    outline: none;
-    border-color: #8b52ff;
-}
-
 #Lista_de_tarefas {
     max-height: 300px;
     overflow-y: auto; 
